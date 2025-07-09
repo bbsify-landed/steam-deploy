@@ -41,5 +41,7 @@ jobs:
           buildDescription: v0.0.1
           rootPath: build
           depot1Path: StandaloneWindows64
+          depot1Id: ${{ secrets.TEST_APP_ID }}
           depot2Path: StandaloneLinux64
+          depot2Id: ${{ secrets.TEST_APP_ID }}
           releaseBranch: prerelease

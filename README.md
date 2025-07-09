@@ -2,7 +2,7 @@
 
 [![Actions status](https://github.com/bbsify-landed/steam-deploy/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/bbsify-landed/steam-deploy/actions/workflows/main.yml)
 
-Github Action to deploy a game to Steam
+Github Action to upload a depot using steamcmd.
 
 ## Setup
 

@@ -1,90 +1,114 @@
-name: 'Steam - Deploy'
-author: Webber Takken <webber@takken.io>
-description: 'Deploy game builds to Steam using the SteamSDK.'
+name: "Steam - Deploy"
+author: bbsify <leon@bbsify.com>
+description: "Deploy game builds to Steam using the SteamSDK."
 inputs:
   username:
     required: true
-    default: ''
-    description: 'The username of your builder account.'
+    default: ""
+    description: "The username of your builder account."
   totp:
     required: false
-    description: 'The TOTP to use for login. If set, `configVdf` will be ignored.'
+    description: "The TOTP to use for login. If set, `configVdf` will be ignored."
   configVdf:
     required: false
-    description: 'The contents of STEAM_HOME/config/config.vdf. Required if `totp` is not set.'
+    description: "The contents of STEAM_HOME/config/config.vdf. Required if `totp` is not set."
   appId:
     required: true
-    default: ''
-    description: 'The app id within steam partner network.'
-  firstDepotIdOverride:
-    required: false
-    description: 'An optional override to specify the ID of the first depot instead of using the app ID plus one.'
+    default: ""
+    description: "The app id within steam partner network."
   buildDescription:
     required: false
-    description: 'Description for this build.'
+    description: "Description for this build."
   rootPath:
     required: false
-    description: 'The root path to your builds. This is the base of which depots will search your files.'
+    description: "The root path to your builds. This is the base of which depots will search your files."
   depot1Path:
     required: false
-    description: 'The path to depot1.'
+    description: "The path to depot1."
+  depot1Id:
+    required: false
+    description: "The ID for depot1."
   depot1InstallScriptPath:
     required: false
-    description: 'The path to the install script for depot1.'
+    description: "The path to the install script for depot1."
   depot2Path:
     required: false
-    description: 'The path to depot2.'
+    description: "The path to depot2."
+  depot2Id:
+    required: false
+    description: "The ID for depot1."
   depot2InstallScriptPath:
     required: false
-    description: 'The path to the install script for depot2.'
+    description: "The path to the install script for depot2."
   depot3Path:
     required: false
-    description: 'The path to depot3.'
+    description: "The path to depot3."
+  depot3Id:
+    required: false
+    description: "The ID for depot1."
   depot3InstallScriptPath:
     required: false
-    description: 'The path to the install script for depot3.'
+    description: "The path to the install script for depot3."
   depot4Path:
     required: false
-    description: 'The path to depot4.'
+    description: "The path to depot4."
+  depot4Id:
+    required: false
+    description: "The ID for depot1."
   depot4InstallScriptPath:
     required: false
-    description: 'The path to the install script for depot4.'
+    description: "The path to the install script for depot4."
   depot5Path:
     required: false
-    description: 'The path to depot5.'
+    description: "The path to depot5."
+  depot5Id:
+    required: false
+    description: "The ID for depot1."
   depot5InstallScriptPath:
     required: false
-    description: 'The path to the install script for depot5.'
+    description: "The path to the install script for depot5."
   depot6Path:
     required: false
-    description: 'The path to depot6.'
+    description: "The path to depot6."
+  depot6Id:
+    required: false
+    description: "The ID for depot1."
   depot6InstallScriptPath:
     required: false
-    description: 'The path to the install script for depot6.'
+    description: "The path to the install script for depot6."
   depot7Path:
     required: false
-    description: 'The path to depot7.'
+    description: "The path to depot7."
+  depot7Id:
+    required: false
+    description: "The ID for depot1."
   depot7InstallScriptPath:
     required: false
-    description: 'The path to the install script for depot7.'
+    description: "The path to the install script for depot7."
   depot8Path:
     required: false
-    description: 'The path to depot8.'
+    description: "The path to depot8."
+  depot8Id:
+    required: false
+    description: "The ID for depot1."
   depot8InstallScriptPath:
     required: false
-    description: 'The path to the install script for depot8.'
+    description: "The path to the install script for depot8."
   depot9Path:
     required: false
-    description: 'The path to depot9.'
+    description: "The path to depot9."
+  depot9Id:
+    required: false
+    description: "The ID for depot1."
   depot9InstallScriptPath:
     required: false
-    description: 'The path to the install script for depot9.'
+    description: "The path to the install script for depot9."
   releaseBranch:
     required: false
-    description: 'The branch within steam that this build will be automatically put live on.'
+    description: "The branch within steam that this build will be automatically put live on."
   debugBranch:
     required: false
-    description: 'If set to true, include debug symbols and directories in the upload'
+    description: "If set to true, include debug symbols and directories in the upload"
     default: false
 outputs:
   manifest:
@@ -101,22 +125,31 @@ runs:
     buildDescription: ${{ inputs.buildDescription }}
     rootPath: ${{ inputs.rootPath }}
     depot1Path: ${{ inputs.depot1Path }}
+    depot1Id: ${{ inputs.depot1Id }}
     depot1InstallScriptPath: ${{ inputs.depot1InstallScriptPath }}
     depot2Path: ${{ inputs.depot2Path }}
+    depot2Id: ${{ inputs.depot2Id }}
     depot2InstallScriptPath: ${{ inputs.depot2InstallScriptPath }}
     depot3Path: ${{ inputs.depot3Path }}
+    depot3Id: ${{ inputs.depot3Id }}
     depot3InstallScriptPath: ${{ inputs.depot3InstallScriptPath }}
     depot4Path: ${{ inputs.depot4Path }}
+    depot4Id: ${{ inputs.depot4Id }}
     depot4InstallScriptPath: ${{ inputs.depot4InstallScriptPath }}
     depot5Path: ${{ inputs.depot5Path }}
+    depot5Id: ${{ inputs.depot5Id }}
     depot5InstallScriptPath: ${{ inputs.depot5InstallScriptPath }}
     depot6Path: ${{ inputs.depot6Path }}
+    depot6Id: ${{ inputs.depot6Id }}
     depot6InstallScriptPath: ${{ inputs.depot6InstallScriptPath }}
     depot7Path: ${{ inputs.depot7Path }}
+    depot7Id: ${{ inputs.depot7Id }}
     depot7InstallScriptPath: ${{ inputs.depot7InstallScriptPath }}
     depot8Path: ${{ inputs.depot8Path }}
+    depot8Id: ${{ inputs.depot8Id }}
     depot8InstallScriptPath: ${{ inputs.depot8InstallScriptPath }}
     depot9Path: ${{ inputs.depot9Path }}
+    depot9Id: ${{ inputs.depot9Id }}
     depot9InstallScriptPath: ${{ inputs.depot9InstallScriptPath }}
     releaseBranch: ${{ inputs.releaseBranch }}
     debugBranch: ${{ inputs.debugBranch }}
