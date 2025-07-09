@@ -21,7 +21,7 @@ i=1
 export DEPOTS="\n  "
 until [ $i -gt 9 ]; do
   eval "currentDepotPath=\$depot${i}Path"
-  eval "currentDepot=\$depo${i}Id"
+  eval "currentDepot=\$depot${i}Id"
   eval "currentDepotInstallScriptPath=\$depot${i}InstallScriptPath"
   if [ -n "$currentDepotPath" ]; then
     # If the depot has an install script, add it to the depot manifest
