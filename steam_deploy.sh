@@ -16,22 +16,13 @@ echo "#   Generating Depot Manifests  #"
 echo "#################################"
 echo ""
 
-if [ -n "$firstDepotIdOverride" ]; then
-  firstDepotId=$firstDepotIdOverride
-else
-  # The first depot ID of a standard Steam app is the app's ID plus one
-  firstDepotId=$((appId + 1))
-fi
-
-i=1;
+i=1
 export DEPOTS="\n  "
 until [ $i -gt 9 ]; do
   eval "currentDepotPath=\$depot${i}Path"
+  eval "currentDepot=\$depo${i}Id"
   eval "currentDepotInstallScriptPath=\$depot${i}InstallScriptPath"
   if [ -n "$currentDepotPath" ]; then
-    # depot1Path uses firstDepotId, depot2Path uses firstDepotId + 1, depot3Path uses firstDepotId + 2...
-    currentDepot=$((firstDepotId + i - 1))
-
     # If the depot has an install script, add it to the depot manifest
     if [ -n "${currentDepotInstallScriptPath:-}" ]; then
       echo ""
@@ -52,7 +43,7 @@ until [ $i -gt 9 ]; do
     echo ""
     export DEPOTS="$DEPOTS  \"$currentDepot\" \"depot${currentDepot}.vdf\"\n  "
 
-    cat << EOF > "depot${currentDepot}.vdf"
+    cat <<EOF >"depot${currentDepot}.vdf"
 "DepotBuildConfig"
 {
   "DepotID" "$currentDepot"
@@ -62,18 +53,18 @@ until [ $i -gt 9 ]; do
     "DepotPath" "."
     "recursive" "1"
   }
-  $(echo "$debugExcludes" |sed 's/\\n/\
+  $(echo "$debugExcludes" | sed 's/\\n/\
 /g')
 
   $installScriptDirective
 }
 EOF
 
-  cat depot${currentDepot}.vdf
-  echo ""
-  fi;
+    cat depot${currentDepot}.vdf
+    echo ""
+  fi
 
-  i=$((i+1))
+  i=$((i + 1))
 done
 
 echo ""
@@ -82,7 +73,7 @@ echo "#    Generating App Manifest    #"
 echo "#################################"
 echo ""
 
-cat << EOF > "manifest.vdf"
+cat <<EOF >"manifest.vdf"
 "appbuild"
 {
   "appid" "$appId"
@@ -125,7 +116,7 @@ else
   mkdir -p "$steamdir/config"
 
   echo "Copying $steamdir/config/config.vdf..."
-  echo "$configVdf" | base64 -d > "$steamdir/config/config.vdf"
+  echo "$configVdf" | base64 -d >"$steamdir/config/config.vdf"
   chmod 777 "$steamdir/config/config.vdf"
 
   echo "Finished Copying SteamGuard Files!"
@@ -138,24 +129,24 @@ echo "#        Test login             #"
 echo "#################################"
 echo ""
 
-steamcmd +set_steam_guard_code "$steam_totp" +login "$steam_username" +quit;
+steamcmd +set_steam_guard_code "$steam_totp" +login "$steam_username" +quit
 
 ret=$?
 if [ $ret -eq 0 ]; then
-    echo ""
-    echo "#################################"
-    echo "#        Successful login       #"
-    echo "#################################"
-    echo ""
+  echo ""
+  echo "#################################"
+  echo "#        Successful login       #"
+  echo "#################################"
+  echo ""
 else
-      echo ""
-      echo "#################################"
-      echo "#        FAILED login           #"
-      echo "#################################"
-      echo ""
-      echo "Exit code: $ret"
+  echo ""
+  echo "#################################"
+  echo "#        FAILED login           #"
+  echo "#################################"
+  echo ""
+  echo "Exit code: $ret"
 
-      exit $ret
+  exit $ret
 fi
 
 echo ""
@@ -165,51 +156,51 @@ echo "#################################"
 echo ""
 
 steamcmd +login "$steam_username" +run_app_build "$manifest_path" +quit || (
-    echo ""
-    echo "#################################"
-    echo "#             Errors            #"
-    echo "#################################"
-    echo ""
-    echo "Listing current folder and rootpath"
-    echo ""
-    ls -alh
-    echo ""
-    ls -alh "$rootPath" || true
-    echo ""
-    echo "Listing logs folder:"
-    echo ""
-    ls -Ralph "$steamdir/logs/"
+  echo ""
+  echo "#################################"
+  echo "#             Errors            #"
+  echo "#################################"
+  echo ""
+  echo "Listing current folder and rootpath"
+  echo ""
+  ls -alh
+  echo ""
+  ls -alh "$rootPath" || true
+  echo ""
+  echo "Listing logs folder:"
+  echo ""
+  ls -Ralph "$steamdir/logs/"
 
-    for f in "$steamdir"/logs/*; do
-      if [ -e "$f" ]; then
-        echo "######## $f"
-        cat "$f"
-        echo
-      fi
-    done
-
-    echo ""
-    echo "Displaying error log"
-    echo ""
-    cat "$steamdir/logs/stderr.txt"
-    echo ""
-    echo "Displaying bootstrapper log"
-    echo ""
-    cat "$steamdir/logs/bootstrap_log.txt"
-    echo ""
-    echo "#################################"
-    echo "#             Output            #"
-    echo "#################################"
-    echo ""
-    ls -Ralph BuildOutput
-
-    for f in BuildOutput/*.log; do
+  for f in "$steamdir"/logs/*; do
+    if [ -e "$f" ]; then
       echo "######## $f"
       cat "$f"
       echo
-    done
+    fi
+  done
 
-    exit 1
-  )
+  echo ""
+  echo "Displaying error log"
+  echo ""
+  cat "$steamdir/logs/stderr.txt"
+  echo ""
+  echo "Displaying bootstrapper log"
+  echo ""
+  cat "$steamdir/logs/bootstrap_log.txt"
+  echo ""
+  echo "#################################"
+  echo "#             Output            #"
+  echo "#################################"
+  echo ""
+  ls -Ralph BuildOutput
 
-echo "manifest=${manifest_path}" >> $GITHUB_OUTPUT
+  for f in BuildOutput/*.log; do
+    echo "######## $f"
+    cat "$f"
+    echo
+  done
+
+  exit 1
+)
+
+echo "manifest=${manifest_path}" >>$GITHUB_OUTPUT
